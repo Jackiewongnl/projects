@@ -1,0 +1,175 @@
+/* simple styling moved from Tailwind, minimal and clean */
+body.app-body {
+  min-height: 100vh;
+  background: #f3f3f3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: sans-serif;
+  color: #333;
+  margin:0;
+  padding:0;
+}
+
+.header {
+  width: 100%;
+  max-width: 400px;
+  background: #fff;
+  padding: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.header h1 {
+  width: 100%;
+  text-align: center;
+  margin: 0.5rem 0;
+  order: 2;
+}
+
+.header p {
+  width: 100%;
+  text-align: center;
+  margin: 0.25rem 0;
+  order: 3;
+  font-size: 0.9rem;
+}
+
+.btn-swipe {
+  order: 1;
+}
+
+.btn-matches {
+  order: 4;
+}
+
+.btn {
+  padding: 0.5rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.btn-swipe { color: #e11d48; }
+.btn-matches { color: #4a5568; }
+
+.badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: #e11d48;
+  color: #fff;
+  border-radius: 50%;
+  width: 1.25rem;
+  height: 1.25rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.hidden { display: none; }
+
+.main-content {
+  width: 100%;
+  max-width: 400px;
+  flex: 1;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 2rem;
+}
+
+.container { flex: 1; display: flex; flex-direction: column; }
+
+.card {
+  flex: 1;
+  position: relative;
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.loader {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  background: #f9f9f9;
+}
+
+.img-wrap { flex: 1; position: relative; background: #000; }
+.img-wrap img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+.details {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 1.5rem;
+  color: #fff;
+  background: linear-gradient(0deg, rgba(0,0,0,0.8), transparent);
+}
+.details h2 { font-size: 1.5rem; margin: 0; }
+.details span { font-size: 1rem; font-weight: 300; margin-left: 0.5rem; }
+.details .status { font-size: 0.875rem; opacity: 0.8; margin-top: 0.5rem; display: flex; align-items: center; }
+.details .status::before { content: ''; display: inline-block; width: 0.5rem; height: 0.5rem; background: #48bb78; border-radius: 50%; margin-right: 0.5rem; }
+
+.actions { display: flex; justify-content: center; align-items: center; gap: 1.5rem; margin-top: 2rem; height: 6rem; }
+.btn.nope, .btn.like {
+  width: 4rem;
+  height: 4rem;
+  background: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+.btn.nope:hover { background: #fee2e2; transform: scale(1.05); }
+.btn.like:hover { background: #d1fae5; transform: scale(1.05); }
+.btn.nope:active, .btn.like:active { transform: scale(0.95); }
+
+.matches-box { flex: 1; }
+.matches-box h2 { font-size: 1.25rem; font-weight: bold; margin-bottom: 1rem; color: #4a5568; }
+
+.no-matches {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #6b7280;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border: 1px solid #e5e7eb;
+}
+.no-matches .btn.back {
+  margin-top: 1.5rem;
+  background: #e11d48;
+  color: #fff;
+  padding: 0.5rem 1.5rem;
+  border-radius: 9999px;
+  font-weight: bold;
+}
+
+.grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1rem; }
+.match-card { background: #fff; border-radius: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); overflow: hidden; border: 1px solid #e5e7eb; }
+.match-img { height: 8rem; background: #f3f4f6; position: relative; }
+.match-img img { width: 100%; height: 100%; object-fit: cover; }
+.match-info { padding: 0.75rem; }
+.match-info .name { font-weight: bold; color: #333; margin: 0; }
+.match-info .status { font-size: 0.75rem; color: #e11d48; }

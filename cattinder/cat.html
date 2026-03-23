@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <title>Cat Tinder</title>
+  <meta charset="UTF-8" >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+  <link rel="stylesheet" href="style.css" >
+</head>
+<body class="app-body">
+  <header class="header">
+    <button id="btn-swipe" class="btn btn-swipe">🔥</button>
+    <h1>Cat Tinder</h1>
+    <button id="btn-matches" class="btn btn-matches">
+      📋
+      <span id="matches-count" class="badge hidden"></span>
+    </button>
+    <p>Zoek een leuke kat!</p>
+    <p>Deze site is een grap!</p>
+  </header>
+
+  <main id="main-content" class="main-content">
+  </main>
+
+  <script>
+    const catNames = [
+      "Luna", "Milo", "Oliver", "Leo", "Loki", "Bella", "Charlie", "Willow", 
+      "Lucy", "Simba", "Binkie", "Minoes", "Poes", "Ard Jan", "Corne", "Simba", "Beer", "Hoi", "Nella", "Tommy", "Max", "Sam", "Loki",
+      "Peter", "Gizmo", "Sien", "Ted", "Mickey", "Tijger", "Minoes", "Mia",
+      "Sam", "Misty", "Boris", "Kitty", "Lola", "Moos", "Jip", "Lotje", "Coco", "Lizzy", "Saartje", "Sammy", "Balou", "Pippa", "Tijgertje", 
+      "Puck", "Binky", "Diesel", "Mimi", "Poes", "Teddy", "Muis", "Joep", "Schmoenie",
+      "Dembé", "Daisy", "Guus", "Poekie", "Snoopy", "Tom", "Jerry", "Bailey", "Felix", "Smokey", "Bo", "Garfield", "Sjors", "Beer", "Snowy",
+      "Kiki", "Coco", "Nala", "Zazu", "Nova", "Pixel", "Shadow", "Storm", "Pepper", "Oreo", "Marble", "Ivy", "Ruby", "Finn", "Atlas", "Skye", "Blue", "Ziggy", "Jazz", "Ollie", "Suki", "Yuki",
+      "Koda", "Kaya", "Nero", "Pluto", "Roxy", "Bibi", "A", "Boef", "vierpotten", "Yoran Palm",
+      "Momo", "Nox", "Juno", "Dobby", "Pika", "Rolo", "Taro", "Nino", "Zora", "Lio", "Vino", "Mavi", "Pino", "Nori", "Tofu", "Kiro", "Miko", "Zeno", "Sora", "Yara", "Nika"
+      
+    ];
+
+    let currentCat = null;
+    let matches = [];
+    let loading = true;
+    let view = 'swipe';
+
+    const main = document.getElementById('main-content');
+    const matchesCountEl = document.getElementById('matches-count');
+
+    async function fetchNewCat() {
+      loading = true;
+      render();
+      try {
+        const resp = await fetch('https://api.thecatapi.com/v1/images/search');
+        const data = await resp.json();
+        const newCat = {
+          ...data[0],
+          name: catNames[Math.floor(Math.random() * catNames.length)],
+          age: Math.floor(Math.random() * 15) + 1
+        };
+        currentCat = newCat;
+      } catch (e) {
+        console.error('Fout bij ophalen kat', e);
+      } finally {
+        loading = false;
+        render();
+      }
+    }
+
+    function handleNope() {
+      fetchNewCat();
+    }
+
+    function handleLike() {
+      if (currentCat) {
+        matches.push(currentCat);
+        updateMatchesBadge();
+      }
+      fetchNewCat();
+    }
+
+    function updateMatchesBadge() {
+      if (matches.length > 0) {
+        matchesCountEl.textContent = matches.length;
+        matchesCountEl.classList.remove('hidden');
+      } else {
+        matchesCountEl.classList.add('hidden');
+      }
+    }
+
+    function render() {
+      main.innerHTML = '';
+      if (view === 'swipe') {
+        const container = document.createElement('div');
+        container.className = 'container';
+
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        if (loading) {
+          const loader = document.createElement('div');
+          loader.className = 'loader';
+          loader.innerHTML = '<p>Zoeken naar leuke katten in de buurt...</p>';
+          card.appendChild(loader);
+        } else if (currentCat) {
+          const imgWrap = document.createElement('div');
+          imgWrap.className = 'img-wrap';
+          imgWrap.innerHTML = `
+            <img src="${currentCat.url}" alt="Een mogelijke match" />
+            <div class="details">
+              <h2>${currentCat.name} <span>${currentCat.age}</span></h2>
+              <p class="status">Nu actief</p>
+            </div>
+          `;
+          card.appendChild(imgWrap);
+        }
+
+        container.appendChild(card);
+
+        const actions = document.createElement('div');
+        actions.className = 'actions';
+        actions.innerHTML = `
+          <button id="btn-nope" class="btn nope">❌</button>
+          <button id="btn-like" class="btn like">❤️</button>
+        `;
+        container.appendChild(actions);
+
+        main.appendChild(container);
+
+        document.getElementById('btn-nope').onclick = handleNope;
+        document.getElementById('btn-like').onclick = handleLike;
+      } else if (view === 'matches') {
+        const box = document.createElement('div');
+        box.className = 'matches-box';
+        box.innerHTML = `<h2>Jouw Matches (${matches.length})</h2>`;
+        if (matches.length === 0) {
+          box.innerHTML += `
+            <div class="no-matches">
+              <p>Je hebt nog geen matches.</p>
+              <p>Ga snel swipen om katten te vinden!</p>
+              <button id="btn-back" class="btn back">Start met swipen</button>
+            </div>
+          `;
+          box.querySelector('#btn-back').onclick = () => { view='swipe'; render(); };
+        } else {
+          const grid = document.createElement('div');
+          grid.className = 'grid';
+          for (const m of matches) {
+            const card = document.createElement('div');
+            card.className = 'match-card';
+            card.innerHTML = `
+              <div class="match-img"><img src="${m.url}" alt="${m.name}" /></div>
+              <div class="match-info">
+                <p class="name">${m.name}</p>
+                <p class="status">Gekoppeld!</p>
+              </div>
+            `;
+            grid.appendChild(card);
+          }
+          box.appendChild(grid);
+        }
+        main.appendChild(box);
+      }
+    }
+
+    document.getElementById('btn-swipe').onclick = () => { view='swipe'; render(); };
+    document.getElementById('btn-matches').onclick = () => { view='matches'; render(); };
+
+    fetchNewCat();
+  </script>
+</body>
+</html>
